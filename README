@@ -1,0 +1,38 @@
+This is a very simple RNN built on top of Theano.
+
+ - No learning methods.
+ - No error functions.
+ - Only inputs, hidden, outputs, bias for hidden.
+ - Recurrent weights only from hidden to hidden.
+ - Only tanh, sig and identity transfer function. No LSTM.
+
+Will be extended, depending on what Theano offers (they plan to add BPTT) and
+how much time I have.
+
+Performance: Quick tests show that this implementation is roughly 20% as fast as
+PyBrain with arac.
+
+Usage:
+
+    >>> import scipy
+    >>> from rnn import RecurrentNetwork
+
+Create a network with three hiddens. The transfer functions can be specified as
+'sig', 'tanh' and 'id'.
+
+    >>> net = RecurrentNetwork(1, 3, 1, hiddenfunc='tanh', outfunc='id')
+
+Generate a sequence of length 3.
+
+    >>> inpt = scipy.random.random((3, 1))
+
+Activate sequence in the network.
+
+    >>> net(inpt)
+    [array([[-0.86715716, -0.38825977, -0.8660872 ],
+           [-0.15247899,  0.787628  , -0.88322586],
+           [-0.95365858, -0.55350506, -0.89969933]], dtype=float32), array([[ 1.33543777],
+           [-0.95650125],
+           [ 1.68285382]], dtype=float32)]
+
+First list item is the hidden activations, second is the results.
