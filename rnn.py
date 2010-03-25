@@ -109,3 +109,27 @@ class RecurrentNetwork(object):
       initialout = scipy.zeros((self.num_output, ))
     return self._net_func(inpts, initialhidden, initialout, self.biasweights,
                           self.inweights, self.outweights, self.recweights)
+
+
+class ErrorFunction(object):
+
+  output = T.matrix('output')
+  target = T.matrix('target')
+
+  def __init__(self):
+    self.func = theano.function([self.output, self.target], self.expr)
+
+  def __call__(self, output, target):
+    return self.func(output, target)
+
+
+class SumOfSquares(ErrorFunction):
+
+  expr = 0.5 * T.sum(T.sqr(ErrorFunction.output - ErrorFunction.target))
+
+
+class FixedTrueNegative(ErrorFunction):
+
+  L = 0.4
+  output, target = ErrorFunction.output, ErrorFunction.target
+  expr = (1 - target) * T.log(1 - output) - L * target * (1 - output) 
