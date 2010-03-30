@@ -12,6 +12,8 @@ import scipy
 import theano
 import theano.tensor as T
 
+import lstm
+
 
 class RecurrentNetwork(object):
 
@@ -58,7 +60,7 @@ class RecurrentNetwork(object):
     'tanh': T.tanh,
     'id': lambda x: x,
     'sig': T.nnet.sigmoid,
-    'lstm': lstm,
+    'lstm': lstm.lstm,
   }
 
   def __init__(self, num_inpt, num_hidden, num_output,
