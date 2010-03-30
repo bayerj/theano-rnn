@@ -40,4 +40,5 @@ Activate sequence in the network.
            [-0.95650125],
            [ 1.68285382]], dtype=float32)]
 
-First list item is the hidden activations, second is the results.
+First list item is the hidden activations, second is the results. In the case of
+LSTMs, there is three arrays (state, hidden, output).
