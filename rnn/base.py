@@ -127,7 +127,7 @@ class LstmNetwork(RecurrentNetwork):
     a given output transfer func."""
     outfunc = self.transferfuncmap[outfunc]
 
-    def one_step(i_t, h_tm1, s_tm1, o_tm1, h_bias, W_in, W_out, W_rec):
+    def one_step(i_t, s_tm1, h_tm1, o_tm1, h_bias, W_in, W_out, W_rec):
       """Perform one step of a simple recurrent network returning the current
       hidden activations, the current state and the output.
 
@@ -140,9 +140,9 @@ class LstmNetwork(RecurrentNetwork):
       hidden_in = theano.dot(W_in, i_t)
       hidden_in += theano.dot(W_rec, h_tm1)
       hidden_in += h_bias
-      s_t, h_t = lstm.lstm_expr(hidden_in, s_tm1)
+      s_t, h_t = lstm.make_expr(hidden_in, s_tm1)
       o_t = outfunc(theano.dot(W_out, h_t))
-      return [h_t, s_t, o_t]
+      return [s_t, h_t, o_t]
 
     return one_step
 
@@ -167,7 +167,7 @@ class LstmNetwork(RecurrentNetwork):
     # Organize all the weights in a single array.
     num_inweights = num_inpt * num_hidden * 4
     num_outweights = num_hidden * num_output
-    num_recweights = num_hidden**2 * 4
+    num_recweights = 4 * num_hidden**2
     num_biasweights = num_hidden * 4
     self.num_weights = (num_inweights + num_outweights + num_recweights +
                         num_biasweights)
@@ -190,7 +190,7 @@ class LstmNetwork(RecurrentNetwork):
   def __call__(self, inpts, initialstate=None, initialhidden=None, 
                initialout=None):
     if initialhidden is None:
-      initialhidden = scipy.zeros((self.num_hidden * 4, ))
+      initialhidden = scipy.zeros((self.num_hidden, ))
     if initialstate is None:
       initialstate = scipy.zeros((self.num_hidden, ))
     if initialout is None:

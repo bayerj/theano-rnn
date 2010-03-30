@@ -1,11 +1,15 @@
 """Module that contains functionality for lstm RNNs."""
 
+
+__author__ = 'Justin Bayer, bayer.justin@googlemail.com'
+
+
 import theano
 import theano.tensor as T
 sig = T.nnet.sigmoid
 
 
-def make_expr(lstminpt, lstmstate):
+def make_expr(lstminpt, state):
   lstminpt_squashed = sig(lstminpt)
   slicesize = lstminpt.shape[0] / 4
   inpt = lstminpt_squashed[:slicesize]

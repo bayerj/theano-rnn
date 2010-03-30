@@ -15,6 +15,10 @@ array([ 0.63761002,  0.78988129], dtype=float32)
 >>> outpt
 array([ 0.50277889,  0.56233251], dtype=float32)
 
+>>> from rnn.base import LstmNetwork
+>>> n = LstmNetwork(2, 2, 1)
+>>> x = n([[1, 2]] * 3)     # TODO: check here for good outputs :)
+
 """
 
 __author__ = 'Justin Bayer, bayer.justin@googlemail.com'
